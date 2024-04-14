@@ -60,7 +60,6 @@ int main() {
             window.draw(s);
         }
         window.draw(shape);
-//        window.draw(btn1);
         window.display();
     }
     return 0;
