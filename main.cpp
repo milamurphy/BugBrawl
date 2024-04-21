@@ -9,21 +9,26 @@
 #include "Bug.h"
 #include "Crawler.h"
 #include "Hopper.h"
+#include <utility>
+#include <list>
 
 using namespace std;
 //using namespace sf;
 
 void readFile(vector<Bug*>& bugs_vector);
 void parseLine(const string& strLine, vector<Bug*>& bugs_vector);
+void printBugs(const vector<Bug*>& bugs_vector);
 
 int main() {
     vector<Bug*> bugs_vector; // pointer to Bug
     readFile(bugs_vector);
     // Create vector of 100 cells in Board.cpp, each cell contains a vector of bugs
 
+    //printBugs(bugs_vector);
 
 
-    Board board;
+
+    //Board board;
     //board.displayBoard();
 
     return 0;
@@ -68,7 +73,11 @@ void parseLine(const string& strLine, vector<Bug*>& bugs_vector)
             getline(strStream, strTemp, DELIMITER);
             int size = stoi(strTemp);
 
-            bugs_vector.push_back(new Crawler(id, x, y, direction, size));
+            pair<int, int> position = make_pair(x, y);
+            //bool isAlive = true;
+            //list<pair<int, int>> path = {};
+
+            bugs_vector.push_back(new Crawler(id, position, direction, size));
         } else if (bug_type == ("H")) {
             // bugtype, id, x, y, direction, size, hopLength)
             getline(strStream, strTemp, DELIMITER);
@@ -84,7 +93,11 @@ void parseLine(const string& strLine, vector<Bug*>& bugs_vector)
             getline(strStream, strTemp, DELIMITER);
             int hopLength = stoi(strTemp);
 
-            bugs_vector.push_back(new Hopper(id, x, y, direction, size, hopLength));
+            pair<int, int> position = make_pair(x, y);
+            //bool isAlive = true;
+            //list<pair<int, int>> path = {};
+
+            bugs_vector.push_back(new Hopper(id, position, direction, size, hopLength));
         }
     }
     catch (std::invalid_argument const& e)
@@ -94,5 +107,18 @@ void parseLine(const string& strLine, vector<Bug*>& bugs_vector)
     catch (std::out_of_range const& e)
     {
         cout << "Integer overflow: std::out_of_range thrown" << '\n';
+    }
+}
+
+void printBugs(const vector<Bug*>& bugs_vector) {
+    cout << "Printing Bugs:" << endl;
+    for (const auto& bug : bugs_vector) {
+        cout << "Bug Type: " << (typeid(*bug) == typeid(Crawler) ? "Crawler" : "Hopper") << endl;
+        cout << "ID: " << bug->getId() << endl;
+        cout << "Position: (" << bug->getPosition().first << ", " << bug->getPosition().second << ")" << endl;
+        cout << "Direction: " << bug->getDirection() << endl;
+        cout << "Size: " << bug->getSize() << endl;
+        // Print other properties specific to Crawler or Hopper if needed
+        cout << endl;
     }
 }
