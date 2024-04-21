@@ -8,7 +8,6 @@ using namespace std;
 class Bug
 {
 protected:
-    char type;
     int id;
     pair<int, int> position;
     int direction{};
@@ -17,7 +16,7 @@ protected:
     list<pair<int,int>> path;
 
 public:
-    Bug(int id, pair<int, int> position, int direction, int size) : id(id), position(position), direction(direction), size(size) {
+    Bug(int id, pair<int, int> position, int direction, int size) : id(id)  , position(position), direction(direction), size(size) {
         this->alive = true;
         this->path.push_back(position);
     }

@@ -24,7 +24,7 @@ int main() {
     readFile(bugs_vector);
     // Create vector of 100 cells in Board.cpp, each cell contains a vector of bugs
 
-    //printBugs(bugs_vector);
+    printBugs(bugs_vector);
 
 
 
