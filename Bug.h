@@ -7,6 +7,7 @@ using namespace std;
 class Bug
 {
 protected:
+    char type;
     int id{};
     pair<int, int> position;
     int direction{};

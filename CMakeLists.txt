@@ -9,7 +9,9 @@ add_executable(CA2 main.cpp
         Crawler.h
         Crawler.cpp
         Hopper.h
-        Hopper.cpp)
+        Hopper.cpp
+        Board.cpp
+        Board.h)
 
 set(SFML_STATIC_LIBRARIES TRUE)
 set(SFML_DIR C:/SFML-2.6.1/lib/cmake/SFML)
