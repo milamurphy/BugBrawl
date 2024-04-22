@@ -60,28 +60,27 @@ void Board::initialiseBugBoard(ifstream& fin) {
                 }
             }
             catch (std::invalid_argument const &e) {
-                cout << "Bad input: std::invalid_argument thrown" << '\n';
+                cout <<"Bad input: std::invalid_argument thrown" << '\n';
             }
             catch (std::out_of_range const &e) {
-                cout << "Integer overflow: std::out_of_range thrown" << '\n';
+                cout <<"Integer overflow: std::out_of_range thrown" << '\n';
             }
         }
         fin.close();
     } else {
-        cout << "Unable to open file, or file is empty." << endl;
+        cout <<"Unable to open file, or file is empty."<< endl;
     }
 }
 
 void Board::displayAllBugs() {
-        cout << "Displaying all Bugs:" << endl;
+        cout <<"Displaying all Bugs:"<< endl;
         for (const auto& bug : bug_vector) {
-            cout << "Bug Type: " << (typeid(*bug) == typeid(Crawler) ? "Crawler" : "Hopper") << endl;
-            cout << "ID: " << bug->getId() << endl;
-            cout << "Position: (" << bug->getPosition().first << ", " << bug->getPosition().second << ")" << endl;
-            cout << "Direction: " << bug->getDirection() << endl;
-            cout << "Size: " << bug->getSize() << endl;
-            cout << "Alive: " << (bug->isAlive() ? "Alive" : "Dead") << endl;
-            cout << endl;
+            cout << bug->getId() << " ";
+            cout << (typeid(*bug) == typeid(Crawler) ? "Crawler" : "Hopper") << " ";
+            cout << "(" << bug->getPosition().first << ", " << bug->getPosition().second << ")" << " ";
+            cout << bug->getDirection() << " "; // to do: print as print north, south, east, west
+            cout << bug->getSize() << " ";
+            cout << (bug->isAlive() ? "Alive" : "Dead") << endl;
         }
 }
 
@@ -92,19 +91,18 @@ void Board::findABug(int id) {
         if(bug->getId() == id)
         {
             found = true;
-            cout << "Bug Type: " << (typeid(*bug) == typeid(Crawler) ? "Crawler" : "Hopper") << endl;
-            cout << "ID: " << bug->getId() << endl;
-            cout << "Position: (" << bug->getPosition().first << ", " << bug->getPosition().second << ")" << endl;
-            cout << "Direction: " << bug->getDirection() << endl;
-            cout << "Size: " << bug->getSize() << endl;
-            cout << "Alive: " << (bug->isAlive() ? "Alive" : "Dead") << endl;
-            cout << endl;
+            cout << bug->getId() << " ";
+            cout << (typeid(*bug) == typeid(Crawler) ? "Crawler" : "Hopper") << " ";
+            cout << "(" << bug->getPosition().first << ", " << bug->getPosition().second << ")" << " ";
+            cout << bug->getDirection() << " "; // to do: print as print north, south, east, west
+            cout << bug->getSize() << " ";
+            cout << (bug->isAlive() ? "Alive" : "Dead") << endl;
             break;
         }
     }
     if(!found)
     {
-        cout << "Bug with ID " << id << "not found." << endl;
+        cout <<"Bug with ID " << id << "not found." << endl;
     }
 }
 

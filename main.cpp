@@ -36,6 +36,7 @@ int main() {
                 break;
             case 2:
                 board.displayAllBugs();
+                break;
             case 3:
                 int bugId;
                 cout << "Enter bug ID to find: " ;
