@@ -27,7 +27,7 @@ int main() {
 
     do {
         displayMenu();
-        cout << "Enter menu option: ";
+        cout <<"Enter menu option: ";
         cin >> choice;
 
         switch(choice) {
@@ -39,15 +39,15 @@ int main() {
                 break;
             case 3:
                 int bugId;
-                cout << "Enter bug ID to find: " ;
+                cout <<"Enter bug ID to find: " ;
                 cin >> bugId;
                 board.findABug(bugId);
                 break;
             case 8:
-                cout << "Exiting the program..." << endl;
+                cout <<"Exiting the program..." << endl;
                 break;
             default:
-                cout << "Invalid input, please try again: ";
+                cout <<"Invalid input, please try again: ";
                 break;
         }
 
