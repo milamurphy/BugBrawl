@@ -22,6 +22,7 @@ public:
     void displayAllBugs();
     void findABug(int id);
     void tapBoard();
+    void displayLifeHistory();
     //void displayBoard();
 };
 

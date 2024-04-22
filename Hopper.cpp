@@ -36,7 +36,10 @@ void Hopper::move() {
             newPos.first -= hopLength;
         }
 
-        path.push_back(newPos);
-        position = newPos;
+        if(moved)
+        {
+            path.push_back(newPos);
+            position = newPos;
+        }
     }
 }

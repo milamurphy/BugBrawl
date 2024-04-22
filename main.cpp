@@ -46,6 +46,10 @@ int main() {
             case 4:
                 board.tapBoard();
                 break;
+            case 5:
+                cout <<"Life History of all bugs: " << endl;
+                board.displayLifeHistory();
+                break;
             case 8:
                 cout <<"Exiting the program..." << endl;
                 break;

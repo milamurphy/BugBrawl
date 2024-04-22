@@ -114,6 +114,20 @@ void Board::tapBoard() {
     }
 }
 
+void Board::displayLifeHistory() {
+    for(const auto& bug : bug_vector)
+    {
+        cout << bug->getId() << " " << (typeid(*bug) == typeid(Crawler) ? "Crawler Path: " : "Hopper Path: ");
+        const auto& path = bug->getPath();
+        for (const auto& pos : path)
+        {
+            cout << "(" << pos.first << ", " << pos.second << ") ";
+        }
+        cout << endl;
+    }
+    // to do, display if bug is still alive, if not display what bug it was eaten by
+}
+
 /*
 void Board::displayBoard() {
     for(auto &&row : cells) {
