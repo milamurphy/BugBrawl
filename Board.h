@@ -21,6 +21,7 @@ public:
     void initialiseBugBoard(ifstream& fin);
     void displayAllBugs();
     void findABug(int id);
+    void tapBoard();
     //void displayBoard();
 };
 

@@ -60,21 +60,21 @@ void Board::initialiseBugBoard(ifstream& fin) {
                 }
             }
             catch (std::invalid_argument const &e) {
-                cout <<"Bad input: std::invalid_argument thrown" << '\n';
+                cout<<"Bad input: std::invalid_argument thrown"<<'\n';
             }
             catch (std::out_of_range const &e) {
-                cout <<"Integer overflow: std::out_of_range thrown" << '\n';
+                cout<<"Integer overflow: std::out_of_range thrown"<<'\n';
             }
         }
-        cout << "Bug board successfully initialised" << endl;
+        cout<<"Bug board successfully initialised"<<endl;
         fin.close();
     } else {
-        cout <<"Unable to open file, or file is empty."<< endl;
+        cout<<"Unable to open file, or file is empty."<<endl;
     }
 }
 
 void Board::displayAllBugs() {
-        cout <<"Displaying all Bugs:"<< endl;
+        cout<<"Displaying all Bugs:"<< endl;
         for (const auto& bug : bug_vector) {
             cout << bug->getId() << " ";
             cout << (typeid(*bug) == typeid(Crawler) ? "Crawler" : "Hopper") << " ";
@@ -104,6 +104,13 @@ void Board::findABug(int id) {
     if(!found)
     {
         cout <<"Bug with ID " << id << "not found." << endl;
+    }
+}
+
+void Board::tapBoard() {
+    for(auto& bug : bug_vector)
+    {
+        bug->move();
     }
 }
 

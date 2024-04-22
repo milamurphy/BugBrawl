@@ -43,6 +43,9 @@ int main() {
                 cin >> bugId;
                 board.findABug(bugId);
                 break;
+            case 4:
+                board.tapBoard();
+                break;
             case 8:
                 cout <<"Exiting the program..." << endl;
                 break;

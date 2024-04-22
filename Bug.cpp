@@ -3,7 +3,25 @@ using  namespace std;
 
 
 bool Bug::isWayBlocked() const {
+    pair<int, int> nextPos = position;
     // assumes 0,0 is at the top left of the bug board
+    if (direction == 1) // north
+        nextPos.second++;
+    else if (direction == 2) // east
+        nextPos.first++;
+    else if (direction == 3) // south
+        nextPos.second--;
+    else if (direction == 4) // west
+        nextPos.first--;
+
+    if (nextPos.first < 0 || nextPos.first > 9 || nextPos.second < 0 || nextPos.second > 9) {
+        return true;
+    }
+
+    return false;
+}
+
+    /*
     // check if bug is at the top edge of the board (y = 0)
     if (position.second == 0) {
         // check if bug is at top left corner
@@ -51,6 +69,6 @@ bool Bug::isWayBlocked() const {
         return false; // way is not blocked
     }
     return false;
-}
+     */
 
 
