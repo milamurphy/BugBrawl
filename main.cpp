@@ -62,6 +62,7 @@ int main() {
 }
 
 void displayMenu() {
+    cout << "" << endl;
     cout << "=========== A Bug's Life ===========" << endl;
     cout << "1. Initialise Bug Board" << endl; // load data from file
     cout << "2. Display all Bugs" << endl;
@@ -71,4 +72,5 @@ void displayMenu() {
     cout << "6. Display all Cells listing their bugs" << endl;
     cout << "7. Run simulation" << endl;
     cout << "8. Exit" << endl; // write life history of all bugs to a file
+    cout << "" << endl;
 }

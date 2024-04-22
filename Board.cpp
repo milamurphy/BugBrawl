@@ -66,6 +66,7 @@ void Board::initialiseBugBoard(ifstream& fin) {
                 cout <<"Integer overflow: std::out_of_range thrown" << '\n';
             }
         }
+        cout << "Bug board successfully initialised" << endl;
         fin.close();
     } else {
         cout <<"Unable to open file, or file is empty."<< endl;

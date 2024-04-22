@@ -25,7 +25,7 @@ public:
     //virtual ~Bug();
 
     virtual void move() =0;
-    virtual bool isWayBlocked() { return false; }; // to do
+    bool isWayBlocked() const;
 
     // Setters
     void setId(int newId) { id = newId; }
@@ -42,7 +42,6 @@ public:
     int getSize() const { return size; }
     bool isAlive() const { return alive; }
     const list<pair<int, int>>& getPath() const { return path; }
-
 };
 
 #endif
