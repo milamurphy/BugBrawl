@@ -1,22 +1,26 @@
 #ifndef CA2_BOARD_H
 #define CA2_BOARD_H
 #include <vector>
-#include <string>
-#include <list>
+#include <fstream>
 #include "Bug.h"
 
 using namespace std;
 
 class Board {
 private:
-    vector<vector<Bug*>> cells;
+    vector<Bug*> bug_vector;
 
 public:
-    explicit Board(const vector<vector<Bug *>> &cells);
+    //explicit Board(const vector<vector<Bug *>> &cells);
+
 
 public:
     Board();
-    void displayBoard();
+
+    // methods
+    void initialiseBugBoard(ifstream& fin);
+    void displayAllBugs();
+    //void displayBoard();
 };
 
 
