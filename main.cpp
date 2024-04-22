@@ -36,11 +36,15 @@ int main() {
                 break;
             case 2:
                 board.displayAllBugs();
-
+            case 3:
+                int bugId;
+                cout << "Enter bug ID to find: " ;
+                cin >> bugId;
+                board.findABug(bugId);
+                break;
             case 8:
                 cout << "Exiting the program..." << endl;
                 break;
-
             default:
                 cout << "Invalid input, please try again: ";
                 break;

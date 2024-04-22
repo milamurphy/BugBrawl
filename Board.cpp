@@ -85,6 +85,29 @@ void Board::displayAllBugs() {
         }
 }
 
+void Board::findABug(int id) {
+    bool found = false;
+    for(const auto& bug : bug_vector)
+    {
+        if(bug->getId() == id)
+        {
+            found = true;
+            cout << "Bug Type: " << (typeid(*bug) == typeid(Crawler) ? "Crawler" : "Hopper") << endl;
+            cout << "ID: " << bug->getId() << endl;
+            cout << "Position: (" << bug->getPosition().first << ", " << bug->getPosition().second << ")" << endl;
+            cout << "Direction: " << bug->getDirection() << endl;
+            cout << "Size: " << bug->getSize() << endl;
+            cout << "Alive: " << (bug->isAlive() ? "Alive" : "Dead") << endl;
+            cout << endl;
+            break;
+        }
+    }
+    if(!found)
+    {
+        cout << "Bug with ID " << id << "not found." << endl;
+    }
+}
+
 /*
 void Board::displayBoard() {
     for(auto &&row : cells) {

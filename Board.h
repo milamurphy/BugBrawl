@@ -20,6 +20,7 @@ public:
     // methods
     void initialiseBugBoard(ifstream& fin);
     void displayAllBugs();
+    void findABug(int id);
     //void displayBoard();
 };
 
