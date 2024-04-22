@@ -23,6 +23,7 @@ public:
     void findABug(int id);
     void tapBoard();
     void displayLifeHistory();
+    void writeLifeHistoryToFile();
     //void displayBoard();
 };
 

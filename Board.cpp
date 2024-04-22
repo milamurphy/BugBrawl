@@ -3,6 +3,7 @@
 #include "Hopper.h"
 #include <iostream>
 #include <sstream>
+#include <fstream>
 #include <utility>
 
 //Board::Board(const vector<vector<Bug *>> &cells) : cells(cells) {}
@@ -126,6 +127,30 @@ void Board::displayLifeHistory() {
         cout << endl;
     }
     // to do, display if bug is still alive, if not display what bug it was eaten by
+}
+
+void Board::writeLifeHistoryToFile() {
+    ofstream fout("lifehistory.txt");
+    if(fout.good())
+    {
+        // same as displayLifeHistory except output to file instead of console
+        for(const auto& bug : bug_vector)
+        {
+            fout << bug->getId() << " " << (typeid(*bug) == typeid(Crawler) ? "Crawler Path: " : "Hopper Path: ");
+            const auto& path = bug->getPath();
+            for (const auto& pos : path)
+            {
+                fout << "(" << pos.first << ", " << pos.second << ") ";
+            }
+            fout << endl;
+        }
+        fout.close();
+        cout << "Bug life history has been written to file." << endl;
+    }
+    else
+    {
+        cout << "Unable to open and write to file." << endl;
+    }
 }
 
 /*

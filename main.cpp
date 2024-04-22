@@ -52,6 +52,7 @@ int main() {
                 break;
             case 8:
                 cout <<"Exiting the program..." << endl;
+                board.writeLifeHistoryToFile();
                 break;
             default:
                 cout <<"Invalid input, please try again: ";
