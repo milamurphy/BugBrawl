@@ -26,6 +26,8 @@ public:
     void displayLifeHistory();
     void writeLifeHistoryToFile();
     void displayAllCells();
+    void runSimulation();
+    int countAliveBugs() const;
 };
 
 

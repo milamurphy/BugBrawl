@@ -54,6 +54,9 @@ int main() {
                 cout <<"Displaying all cells: " << endl;
                 board.displayAllCells();
                 break;
+            case 7:
+                cout <<"Running simulation: " << endl;
+                board.runSimulation();
             case 8:
                 cout <<"Exiting the program..." << endl;
                 board.writeLifeHistoryToFile();

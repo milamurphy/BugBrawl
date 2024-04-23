@@ -6,7 +6,8 @@
 #include <fstream>
 #include <utility>
 #include <algorithm>
-
+#include <chrono>
+#include <thread>
 
 void Board::initialiseBugBoard(ifstream& fin) {
     if (fin.good()) {
@@ -149,6 +150,8 @@ void Board::tapBoard() {
         cells[bug->getPosition().first][bug->getPosition().second].push_back(bug);
     }
 
+    cout << "Board tapped" << endl;
+
     // to do, if 2 bugs are the same size when they fight, pick a bug at random
     for (int x = 0; x < 10; ++x) { // iterate over each cell in the 10x10 board
         for (int y = 0; y < 10; ++y) {
@@ -163,9 +166,13 @@ void Board::tapBoard() {
                 for (auto it = cells[x][y].begin(); it != cells[x][y].end(); ++it) { // loop through again to add the sizes of all smaller bugs to the biggest bug
                     Bug *currentBug = *it;
                     if (currentBug != biggestBug) {
-                        biggestBug->setSize(biggestBug->getSize() + currentBug->getSize());
-                        currentBug->setAlive(false); // current bug is now dead
-                        cout << "Killed " << currentBug->getId() << endl;
+                        if(currentBug->isAlive())
+                        {
+                            biggestBug->setSize(biggestBug->getSize() + currentBug->getSize());
+                            currentBug->setAlive(false); // current bug is now dead
+
+                            cout << "Killed " << currentBug->getId() << endl;
+                        }
                     }
                 }
             }
@@ -255,16 +262,22 @@ void Board::displayAllCells() {
                 }
                 cout << endl;
             }
-        }
-    }
-/*
-void Board::displayBoard() {
-    for(auto &&row : cells) {
-        for (int cell: row) {
-            cout << cell << " ";
-        }
-        cout << endl;
     }
 }
- */
 
+void Board::runSimulation() {
+    while(countAliveBugs() > 1) {
+        tapBoard();
+        this_thread::sleep_for(chrono::seconds(1));
+    }
+}
+
+int Board::countAliveBugs() const {
+    int numAliveBugs = 0;
+    for (const auto& bug : bug_vector) {
+        if (bug->isAlive()) {
+            numAliveBugs++;
+        }
+    }
+    return numAliveBugs;
+}
