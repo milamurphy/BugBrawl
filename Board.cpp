@@ -148,7 +148,6 @@ void Board::tapBoard() {
             cells[bug->getPosition().first][bug->getPosition().second].push_back(bug);
 
     }
-    cout << "Board tapped" << endl;
 
     for (int x = 0; x < 10; ++x) { // iterate over each cell in the 10x10 board
         for (int y = 0; y < 10; ++y) {
@@ -217,7 +216,7 @@ void Board::displayAllCells() {
         auto position = bug->getPosition();
         int x = position.first;
         int y = position.second;
-        cells[x][y].push_back(bug);
+        //cells[x][y].push_back(bug);
     }
 
     for(int i=0; i<10; i++)
@@ -233,10 +232,14 @@ void Board::displayAllCells() {
                 {
                     for(Bug* bug : cells[i][j])
                     {
-                        cout << (typeid(bug) == typeid(Crawler) ? "Crawler" : "Hopper");
-                        cout << " " << bug->getId() << " ";
+                        if(bug->isAlive())
+                        {
+                            cout << bug->getType() << " ";
+                            cout << " " << bug->getId() << " ";
+                        }
                     }
                 }
+                cout << endl;
             }
         }
     }
