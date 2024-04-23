@@ -5,12 +5,11 @@
 Crawler::~Crawler() = default;
 
 void Crawler::move() {
-    if(isWayBlocked())
+    while(isWayBlocked())
     {
         direction = rand() % 4 + 1;
     }
-    else
-    {
+
         pair<int, int> newPos = position;
         if(direction ==1) // north
         {
@@ -30,5 +29,4 @@ void Crawler::move() {
 
         path.push_back(newPos);
         position = newPos;
-    }
 }

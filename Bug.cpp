@@ -3,22 +3,18 @@ using  namespace std;
 
 
 bool Bug::isWayBlocked() const {
-    pair<int, int> nextPos = position;
-    // assumes 0,0 is at the top left of the bug board
-    if (direction == 1) // north
-        nextPos.second++;
-    else if (direction == 2) // east
-        nextPos.first++;
-    else if (direction == 3) // south
-        nextPos.second--;
-    else if (direction == 4) // west
-        nextPos.first--;
-
-    if (nextPos.first < 0 || nextPos.first > 9 || nextPos.second < 0 || nextPos.second > 9) {
-        return true;
+    switch (direction) {
+        case 1:
+            return position.second == 0; // returns true if y == 0 which means they are at the edge of the board
+        case 2:
+            return position.first == 9;
+        case 3:
+            return position.second == 9;
+        case 4:
+            return position.first == 0;
+        default:
+            return false;
     }
-
-    return false;
 }
 
     /*
