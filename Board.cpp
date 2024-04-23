@@ -5,6 +5,7 @@
 #include <sstream>
 #include <fstream>
 #include <utility>
+#include <algorithm>
 
 
 void Board::initialiseBugBoard(ifstream& fin) {
@@ -36,6 +37,7 @@ void Board::initialiseBugBoard(ifstream& fin) {
                     //list<pair<int, int>> path = {};
 
                     bug_vector.push_back(new Crawler(id, position, direction, size));
+                    cells[x][y].push_back(new Crawler(id, position, direction, size));
                 } else if (bug_type == ("H")) {
                     // bugtype, id, x, y, direction, size, hopLength)
                     getline(strStream, strTemp, DELIMITER);
@@ -56,6 +58,7 @@ void Board::initialiseBugBoard(ifstream& fin) {
                     //list<pair<int, int>> path = {};
 
                     bug_vector.push_back(new Hopper(id, position, direction, size, hopLength));
+                    cells[x][y].push_back(new Hopper(id, position, direction, size, hopLength));
                 }
             }
             catch (std::invalid_argument const &e) {
@@ -137,9 +140,36 @@ void Board::findABug(int id) {
 }
 
 void Board::tapBoard() {
-    for(auto& bug : bug_vector)
+    for(Bug *bug : bug_vector)
     {
-        bug->move();
+            vector<Bug*> &v = cells[bug->getPosition().first][bug->getPosition().second];
+            v.erase(remove(v.begin(), v.end(), bug));
+            bug->move();
+            cells[bug->getPosition().first][bug->getPosition().second].push_back(bug);
+
+    }
+    cout << "Board tapped" << endl;
+
+    for (int x = 0; x < 10; ++x) { // iterate over each cell in the 10x10 board
+        for (int y = 0; y < 10; ++y) {
+            if (!cells[x][y].empty()) {
+                Bug *biggestBug = cells[x][y][0]; // initalises the first bug as the biggest bug
+                for (auto it = cells[x][y].begin() + 1; it != cells[x][y].end(); it++) {
+                    Bug *currentBug = *it; // assign each bug as the current bug
+                    if (currentBug->getSize() > biggestBug->getSize()) {
+                        biggestBug = currentBug; // if the current bug is bigger than the biggest bug, become the biggest bug
+                    }
+                }
+                for (auto it = cells[x][y].begin(); it != cells[x][y].end(); ++it) { // loop through again to add the sizes of all smaller bugs to the biggest bug
+                    Bug *currentBug = *it;
+                    if (currentBug != biggestBug) {
+                        biggestBug->setSize(biggestBug->getSize() + currentBug->getSize());
+                        currentBug->setAlive(false); // current bug is now dead
+                        cout << "Killed " << currentBug->getId() << endl;
+                    }
+                }
+            }
+        }
     }
 }
 
