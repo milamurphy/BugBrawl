@@ -9,13 +9,14 @@ using namespace std;
 class Board {
 private:
     vector<Bug*> bug_vector;
+    vector<vector<Bug*>> cells;
 
 public:
     //explicit Board(const vector<vector<Bug *>> &cells);
 
 
 public:
-    Board();
+    Board() : cells(10, vector<Bug*>(10, nullptr)) {};
 
     // methods
     void initialiseBugBoard(ifstream& fin);
@@ -24,6 +25,7 @@ public:
     void tapBoard();
     void displayLifeHistory();
     void writeLifeHistoryToFile();
+    void displayAllCells();
     //void displayBoard();
 };
 

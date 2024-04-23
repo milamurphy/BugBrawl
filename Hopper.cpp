@@ -22,7 +22,7 @@ void Hopper::move() {
         pair<int, int> newPos = position;
         if(direction ==1) // north
         {
-            newPos.second += hopLength;
+            newPos.second -= hopLength;
         }
         else if(direction ==2) // east
         {
@@ -30,7 +30,7 @@ void Hopper::move() {
         }
         else if(direction ==3) // south
         {
-            newPos.second -= hopLength;
+            newPos.second += hopLength;
         }
         else { // west
             newPos.first -= hopLength;

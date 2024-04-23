@@ -50,6 +50,10 @@ int main() {
                 cout <<"Life History of all bugs: " << endl;
                 board.displayLifeHistory();
                 break;
+            case 6:
+                cout <<"Displaying all cells: " << endl;
+                board.displayAllCells();
+                break;
             case 8:
                 cout <<"Exiting the program..." << endl;
                 board.writeLifeHistoryToFile();

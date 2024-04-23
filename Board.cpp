@@ -6,8 +6,6 @@
 #include <fstream>
 #include <utility>
 
-//Board::Board(const vector<vector<Bug *>> &cells) : cells(cells) {}
-Board::Board() {}
 
 void Board::initialiseBugBoard(ifstream& fin) {
     if (fin.good()) {
@@ -153,6 +151,38 @@ void Board::writeLifeHistoryToFile() {
     }
 }
 
+void Board::displayAllCells() {
+    for(auto bug : bug_vector)
+    {
+        auto position = bug->getPosition();
+        int x = position.first;
+        int y = position.second;
+        cells[x][y] = bug;
+    }
+
+    for(int i=0; i<10; i++)
+    {
+            for (int j = 0; j < 10; j++)
+            {
+                cout << "(" << i << "," << j << "): ";
+                if (cells[i][j] == nullptr)
+                {
+                    cout << "empty";
+                }
+                else
+                {
+                        cout << (typeid(*cells[i][j]) == typeid(Crawler) ? "Crawler" : "Hopper");
+                        cout << " " << cells[i][j]->getId();
+                }
+
+                if (cells[i][j] != nullptr && j < 9 && cells[i][j + 1] != nullptr)
+                {
+                    cout << ", ";
+                }
+                cout << endl;
+            }
+        }
+    }
 /*
 void Board::displayBoard() {
     for(auto &&row : cells) {
