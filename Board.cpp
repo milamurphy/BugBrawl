@@ -76,7 +76,7 @@ void Board::displayAllBugs() {
         cout<<"Displaying all Bugs:"<< endl;
         for (const auto& bug : bug_vector) {
             cout << bug->getId() << " ";
-            cout << (typeid(*bug) == typeid(Crawler) ? "Crawler" : "Hopper") << " ";
+            cout << bug->getType() << " ";
             cout << "(" << bug->getPosition().first << ", " << bug->getPosition().second << ")" << " ";
             cout << bug->getSize() << " ";
 
@@ -107,7 +107,7 @@ void Board::findABug(int id) {
         {
             found = true;
             cout << bug->getId() << " ";
-            cout << (typeid(*bug) == typeid(Crawler) ? "Crawler" : "Hopper") << " ";
+            cout << bug->getType() << " ";
             cout << "(" << bug->getPosition().first << ", " << bug->getPosition().second << ")" << " ";
             cout << bug->getSize() << " ";
 
@@ -119,8 +119,8 @@ void Board::findABug(int id) {
                 default: cout << "Unknown direction error"; break;
             }
 
-            if (typeid(*bug) == typeid(Hopper)) {
-                Hopper* hopperBug = dynamic_cast<Hopper*>(bug);
+            if (bug->getType()=="Hopper") {
+                Hopper* hopperBug = dynamic_cast<Hopper*>(bug); // turning bug object into hopper object to access getHopLength method
                 if (hopperBug) {
                     cout << hopperBug->getHopLength() << " ";
                 }

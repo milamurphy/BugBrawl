@@ -7,6 +7,7 @@ class Hopper : public Bug {
 
 public:
     Hopper(int id, pair<int, int>position, int direction, int size, int hopLength) : Bug (id, position, direction, size), hopLength(hopLength) {
+        this->type = "Hopper";
         this->alive = true;
         this->path = {this->position};
     };

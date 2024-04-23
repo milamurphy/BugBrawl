@@ -3,11 +3,13 @@
 
 #include <utility>
 #include <list>
+#include <string>
 using namespace std;
 
 class Bug
 {
 protected:
+    string type;
     int id;
     pair<int, int> position;
     int direction{};
@@ -34,6 +36,7 @@ public:
     void setSize(int newSize) { size = newSize; }
     void setAlive(bool newAlive) { alive = newAlive; }
     void setPath(const list<pair<int, int>>& newPath) { path = newPath; }
+    const string &getType() const { return type; };
 
     // Getters
     int getId() const { return id; }

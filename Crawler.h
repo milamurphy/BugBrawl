@@ -9,6 +9,7 @@ class Crawler : public Bug {
 
 public:
     Crawler(int id, pair<int, int> position, int direction, int size) : Bug(id, position, direction, size) {
+        this->type = "Crawler";
         this->alive = true;
         this->path = {this->position};
     };
