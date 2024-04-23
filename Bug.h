@@ -42,6 +42,7 @@ public:
     int getSize() const { return size; }
     bool isAlive() const { return alive; }
     const list<pair<int, int>>& getPath() const { return path; }
+
 };
 
 #endif

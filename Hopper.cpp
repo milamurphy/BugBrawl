@@ -3,7 +3,7 @@
 
 Hopper::~Hopper() {}
 
-
+// to do, allow hopper to hop less than the hoplength if it is close to the edge of the board
 void Hopper::move() {
     bool moved = false;
     for(int i = 0; i < hopLength && !moved; i++)

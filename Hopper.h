@@ -7,7 +7,8 @@ class Hopper : public Bug {
 
 public:
     Hopper(int id, pair<int, int>position, int direction, int size, int hopLength) : Bug (id, position, direction, size), hopLength(hopLength) {
-        this->hopLength = hopLength;
+        this->alive = true;
+        this->path = {this->position};
     };
 
     int getHopLength() const {return hopLength; };
@@ -18,7 +19,7 @@ public:
 
 protected:
     int hopLength;
-    virtual void move();
+    void move() override;
 };
 
 #endif //CA2_HOPPER_H

@@ -78,8 +78,23 @@ void Board::displayAllBugs() {
             cout << bug->getId() << " ";
             cout << (typeid(*bug) == typeid(Crawler) ? "Crawler" : "Hopper") << " ";
             cout << "(" << bug->getPosition().first << ", " << bug->getPosition().second << ")" << " ";
-            cout << bug->getDirection() << " "; // to do: print as print north, south, east, west
             cout << bug->getSize() << " ";
+
+            switch (bug->getDirection()) {
+                case 1: cout << "North "; break;
+                case 2: cout << "East "; break;
+                case 3: cout << "South "; break;
+                case 4: cout << "West "; break;
+                default: cout << "Unknown direction error"; break;
+            }
+
+            if (typeid(*bug) == typeid(Hopper)) {
+                Hopper* hopperBug = dynamic_cast<Hopper*>(bug);
+                if (hopperBug) {
+                    cout << hopperBug->getHopLength() << " ";
+                }
+            }
+
             cout << (bug->isAlive() ? "Alive" : "Dead") << endl;
         }
 }
@@ -94,8 +109,23 @@ void Board::findABug(int id) {
             cout << bug->getId() << " ";
             cout << (typeid(*bug) == typeid(Crawler) ? "Crawler" : "Hopper") << " ";
             cout << "(" << bug->getPosition().first << ", " << bug->getPosition().second << ")" << " ";
-            cout << bug->getDirection() << " "; // to do: print as print north, south, east, west
             cout << bug->getSize() << " ";
+
+            switch (bug->getDirection()) {
+                case 1: cout << "North "; break;
+                case 2: cout << "East "; break;
+                case 3: cout << "South "; break;
+                case 4: cout << "West "; break;
+                default: cout << "Unknown direction error"; break;
+            }
+
+            if (typeid(*bug) == typeid(Hopper)) {
+                Hopper* hopperBug = dynamic_cast<Hopper*>(bug);
+                if (hopperBug) {
+                    cout << hopperBug->getHopLength() << " ";
+                }
+            }
+
             cout << (bug->isAlive() ? "Alive" : "Dead") << endl;
             break;
         }
@@ -157,7 +187,7 @@ void Board::displayAllCells() {
         auto position = bug->getPosition();
         int x = position.first;
         int y = position.second;
-        cells[x][y] = bug;
+        cells[x][y].push_back(bug);
     }
 
     for(int i=0; i<10; i++)
@@ -165,21 +195,18 @@ void Board::displayAllCells() {
             for (int j = 0; j < 10; j++)
             {
                 cout << "(" << i << "," << j << "): ";
-                if (cells[i][j] == nullptr)
+                if (cells[i][j].empty())
                 {
                     cout << "empty";
                 }
                 else
                 {
-                        cout << (typeid(*cells[i][j]) == typeid(Crawler) ? "Crawler" : "Hopper");
-                        cout << " " << cells[i][j]->getId();
+                    for(Bug* bug : cells[i][j])
+                    {
+                        cout << (typeid(bug) == typeid(Crawler) ? "Crawler" : "Hopper");
+                        cout << " " << bug->getId() << " ";
+                    }
                 }
-
-                if (cells[i][j] != nullptr && j < 9 && cells[i][j + 1] != nullptr)
-                {
-                    cout << ", ";
-                }
-                cout << endl;
             }
         }
     }
