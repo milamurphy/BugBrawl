@@ -66,10 +66,6 @@ int main() {
     } while (choice != 8);
     fin.close();
 
-
-    // Create vector of 100 cells in Board.cpp, each cell contains a vector of bugs
-
-
     return 0;
 }
 

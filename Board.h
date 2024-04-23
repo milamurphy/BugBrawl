@@ -26,7 +26,6 @@ public:
     void displayLifeHistory();
     void writeLifeHistoryToFile();
     void displayAllCells();
-    //void displayBoard();
 };
 
 

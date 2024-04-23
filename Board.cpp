@@ -139,16 +139,17 @@ void Board::findABug(int id) {
     }
 }
 
+
 void Board::tapBoard() {
     for(Bug *bug : bug_vector)
     {
-            vector<Bug*> &v = cells[bug->getPosition().first][bug->getPosition().second];
-            v.erase(remove(v.begin(), v.end(), bug));
-            bug->move();
-            cells[bug->getPosition().first][bug->getPosition().second].push_back(bug);
-
+        vector<Bug*> &v = cells[bug->getPosition().first][bug->getPosition().second];
+        v.erase(remove(v.begin(), v.end(), bug));
+        bug->move();
+        cells[bug->getPosition().first][bug->getPosition().second].push_back(bug);
     }
 
+    // to do, if 2 bugs are the same size when they fight, pick a bug at random
     for (int x = 0; x < 10; ++x) { // iterate over each cell in the 10x10 board
         for (int y = 0; y < 10; ++y) {
             if (!cells[x][y].empty()) {
@@ -169,8 +170,21 @@ void Board::tapBoard() {
                 }
             }
         }
+    } // end of bug eating for loop
+
+    int aliveBugCount = 0;
+    Bug *lastAliveBug = nullptr;
+    for (const auto &bug : bug_vector) {
+        if (bug->isAlive()) {
+            aliveBugCount++;
+            lastAliveBug = bug;
+        }
+    }
+    if (aliveBugCount == 1 && lastAliveBug != nullptr) {
+        cout << "The winner is Bug ID: " << lastAliveBug->getId() << endl;
     }
 }
+
 
 void Board::displayLifeHistory() {
     for(const auto& bug : bug_vector)
