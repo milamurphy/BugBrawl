@@ -153,8 +153,9 @@ void Board::tapBoard() {
                         {
                             biggestBug->setSize(biggestBug->getSize() + currentBug->getSize());
                             currentBug->setAlive(false); // current bug is now dead
+                            currentBug->setEatenBy(to_string((biggestBug->getId())));
 
-                            cout << "Killed " << currentBug->getId() << endl;
+                            cout << biggestBug->getId() << " Killed " << currentBug->getId() << endl;
                         }
                     }
                 }
@@ -183,7 +184,15 @@ void Board::displayLifeHistory() {
         const auto& path = bug->getPath();
         for (const auto& pos : path)
         {
-            cout << "(" << pos.first << ", " << pos.second << ") ";
+            cout << "(" << pos.first << ", " << pos.second << ")";
+        }
+        if(bug->isAlive())
+        {
+            cout <<", Alive!";
+        }
+        else
+        {
+            cout << " Eaten by " << bug->getEatenBy();
         }
         cout << endl;
     }

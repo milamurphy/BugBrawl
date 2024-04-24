@@ -16,11 +16,13 @@ protected:
     int size{};
     bool alive{};
     list<pair<int,int>> path;
+    string eatenBy;
 
 public:
     Bug(int id, pair<int, int> position, int direction, int size) : id(id)  , position(position), direction(direction), size(size) {
         this->alive = true;
         this->path.push_back(position);
+        this->eatenBy = "";
     }
 
     // Bug(int id=0);	// parameter, with default value
@@ -36,7 +38,8 @@ public:
     void setSize(int newSize) { size = newSize; }
     void setAlive(bool newAlive) { alive = newAlive; }
     void setPath(const list<pair<int, int>>& newPath) { path = newPath; }
-    const string &getType() const { return type; };
+    void setType(string newType) {type = newType;}
+    void setEatenBy(string newEatenBy) {eatenBy = newEatenBy;}
 
     // Getters
     int getId() const { return id; }
@@ -45,6 +48,9 @@ public:
     int getSize() const { return size; }
     bool isAlive() const { return alive; }
     const list<pair<int, int>>& getPath() const { return path; }
+    const string &getType() const { return type; };
+    const string &getEatenBy() const { return eatenBy; };
+
 
 };
 
