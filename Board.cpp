@@ -20,43 +20,26 @@ void Board::initialiseBugBoard(ifstream& fin) {
             string strTemp; // temporary string
 
             try {
-                if (bug_type == ("C")) {
-                    // bugtype, id, x, y, direction, size)
-                    getline(strStream, strTemp, DELIMITER);
-                    int id = stoi(strTemp); // stoi converts string to int
-                    getline(strStream, strTemp, DELIMITER);
-                    int x = stoi(strTemp);
-                    getline(strStream, strTemp, DELIMITER);
-                    int y = stoi(strTemp);
-                    getline(strStream, strTemp, DELIMITER);
-                    int direction = stoi(strTemp);
-                    getline(strStream, strTemp, DELIMITER);
-                    int size = stoi(strTemp);
-
-                    pair<int, int> position = make_pair(x, y);
-                    //bool isAlive = true;
-                    //list<pair<int, int>> path = {};
-
+                // bug_type, id, x, y, direction, size, (hoplength))
+                getline(strStream, strTemp, DELIMITER);
+                int id = stoi(strTemp); // stoi converts string to int
+                getline(strStream, strTemp, DELIMITER);
+                int x = stoi(strTemp);
+                getline(strStream, strTemp, DELIMITER);
+                int y = stoi(strTemp);
+                getline(strStream, strTemp, DELIMITER);
+                int direction = stoi(strTemp);
+                getline(strStream, strTemp, DELIMITER);
+                int size = stoi(strTemp);
+                pair<int, int> position = make_pair(x, y);
+                if(bug_type == "C")
+                {
                     bug_vector.push_back(new Crawler(id, position, direction, size));
                     cells[x][y].push_back(new Crawler(id, position, direction, size));
-                } else if (bug_type == ("H")) {
-                    // bugtype, id, x, y, direction, size, hopLength)
-                    getline(strStream, strTemp, DELIMITER);
-                    int id = stoi(strTemp); // stoi converts string to int
-                    getline(strStream, strTemp, DELIMITER);
-                    int x = stoi(strTemp);
-                    getline(strStream, strTemp, DELIMITER);
-                    int y = stoi(strTemp);
-                    getline(strStream, strTemp, DELIMITER);
-                    int direction = stoi(strTemp);
-                    getline(strStream, strTemp, DELIMITER);
-                    int size = stoi(strTemp);
+                }
+                else if (bug_type == ("H")) {
                     getline(strStream, strTemp, DELIMITER);
                     int hopLength = stoi(strTemp);
-
-                    pair<int, int> position = make_pair(x, y);
-                    //bool isAlive = true;
-                    //list<pair<int, int>> path = {};
 
                     bug_vector.push_back(new Hopper(id, position, direction, size, hopLength));
                     cells[x][y].push_back(new Hopper(id, position, direction, size, hopLength));
