@@ -28,6 +28,7 @@ public:
     void displayAllCells();
     void runSimulation();
     int countAliveBugs() const;
+    void displayGUI();
 };
 
 

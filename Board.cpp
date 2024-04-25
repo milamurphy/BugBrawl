@@ -1,6 +1,7 @@
 #include "Board.h"
 #include "Crawler.h"
 #include "Hopper.h"
+#include "Roamer.h"
 #include <iostream>
 #include <sstream>
 #include <fstream>
@@ -8,6 +9,10 @@
 #include <algorithm>
 #include <chrono>
 #include <thread>
+#include <SFML/Graphics.hpp>
+
+using namespace sf;
+
 
 void Board::initialiseBugBoard(ifstream& fin) {
     if (fin.good()) {
@@ -43,6 +48,10 @@ void Board::initialiseBugBoard(ifstream& fin) {
 
                     bug_vector.push_back(new Hopper(id, position, direction, size, hopLength));
                     cells[x][y].push_back(new Hopper(id, position, direction, size, hopLength));
+                }
+                else if (bug_type == ("R")) {
+                    bug_vector.push_back(new Roamer(id, position, direction, size));
+                    cells[x][y].push_back(new Roamer(id, position, direction, size));
                 }
             }
             catch (std::invalid_argument const &e) {
@@ -136,8 +145,8 @@ void Board::tapBoard() {
     cout << "Board tapped" << endl;
 
     // to do, if 2 bugs are the same size when they fight, pick a bug at random
-    for (int x = 0; x < 10; ++x) { // iterate over each cell in the 10x10 board
-        for (int y = 0; y < 10; ++y) {
+    for (int x = 0; x < 10; x++) { // iterate over each cell in the 10x10 board
+        for (int y = 0; y < 10; y++) {
             if (!cells[x][y].empty()) {
                 Bug *biggestBug = cells[x][y][0]; // initalises the first bug as the biggest bug
                 for (auto it = cells[x][y].begin() + 1; it != cells[x][y].end(); it++) {
@@ -163,6 +172,7 @@ void Board::tapBoard() {
         }
     } // end of bug eating for loop
 
+    // check for winner
     int aliveBugCount = 0;
     Bug *lastAliveBug = nullptr;
     for (const auto &bug : bug_vector) {
@@ -180,7 +190,7 @@ void Board::tapBoard() {
 void Board::displayLifeHistory() {
     for(const auto& bug : bug_vector)
     {
-        cout << bug->getId() << " " << (typeid(*bug) == typeid(Crawler) ? "Crawler Path: " : "Hopper Path: ");
+        cout << bug->getId() << " " << bug->getType() << " Path ";
         const auto& path = bug->getPath();
         for (const auto& pos : path)
         {
@@ -206,7 +216,7 @@ void Board::writeLifeHistoryToFile() {
         // same as displayLifeHistory except output to file instead of console
         for(const auto& bug : bug_vector)
         {
-            fout << bug->getId() << " " << (typeid(*bug) == typeid(Crawler) ? "Crawler Path: " : "Hopper Path: ");
+            fout << bug->getId() << " " << bug->getType() << " Path ";
             const auto& path = bug->getPath();
             for (const auto& pos : path)
             {
@@ -261,6 +271,7 @@ void Board::runSimulation() {
     while(countAliveBugs() > 1) {
         tapBoard();
         this_thread::sleep_for(chrono::seconds(1));
+        /* Reference: https://www.softwaretestinghelp.com/cpp-sleep/#:~:text=template%3C%20class%20Clock%2C%20class%20Duration,thread%20is%20to%20be%20blocked.&text=Description%3A%20This%20function%20is%20defined%20in%20the%20header. */
     }
 }
 
@@ -272,4 +283,78 @@ int Board::countAliveBugs() const {
         }
     }
     return numAliveBugs;
+}
+
+void Board::displayGUI() {
+    RenderWindow window(VideoMode(800, 800), "A Bug's Life");
+
+    // variables
+    int cellSize = 80;
+    int bugSize = 10;
+    int bugMarginX = (cellSize - bugSize) / 2; // center bugs within cells
+    int bugMarginY = (cellSize - bugSize) / 2;
+    Color lightBrown(196, 164, 132);
+    Color darkBrown(156, 115, 96);
+    Texture crawlerTexture;
+    crawlerTexture.loadFromFile("beetle.png");
+    Texture hopperTexture;
+    hopperTexture.loadFromFile("mantis.png");
+    Texture roamerTexture;
+    roamerTexture.loadFromFile("ladybug.png");
+
+    Sprite crawlerSprite(crawlerTexture);
+    Sprite hopperSprite(hopperTexture);
+    Sprite roamerSprite(roamerTexture);
+
+    crawlerSprite.setScale((float)cellSize / crawlerTexture.getSize().x, (float)cellSize / crawlerTexture.getSize().y);
+    hopperSprite.setScale((float)cellSize / hopperTexture.getSize().x, (float)cellSize / hopperTexture.getSize().y);
+    roamerSprite.setScale((float)cellSize / roamerTexture.getSize().x, (float)cellSize / roamerTexture.getSize().y);
+
+    while (window.isOpen()) {
+        Event event;
+        while (window.pollEvent(event)) {
+            if (event.type == Event::Closed) {
+                window.close();
+            } else if (event.type == Event::MouseButtonPressed) {
+                    tapBoard();
+            }
+        }
+
+        window.clear();
+
+        // draw cells and bugs
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                // draw cell border
+                RectangleShape cell(sf::Vector2f(cellSize, cellSize));
+                cell.setPosition(i * cellSize, j * cellSize);
+                if ((i + j) % 2 == 0)
+                    cell.setFillColor(lightBrown);
+                else
+                    cell.setFillColor(darkBrown);
+                window.draw(cell);
+
+                // Draw bugs in the cell
+                for (auto &bug : cells[i][j]) {
+                    if (bug->isAlive()) {
+
+                        if (bug->getType() == "Crawler") {
+                            crawlerSprite.setPosition(i * cellSize, j * cellSize);
+                            window.draw(crawlerSprite);
+                        } else if (bug->getType() == "Hopper") {
+                            hopperSprite.setPosition(i * cellSize, j * cellSize);
+                            window.draw(hopperSprite);
+                        }
+                        else if(bug->getType() == "Roamer") {
+                            roamerSprite.setPosition(i * cellSize, j * cellSize);
+                            window.draw(roamerSprite);
+                        }
+                    }
+                }
+            }
+        }
+
+        // Display the window
+        window.display();
+    }
 }
