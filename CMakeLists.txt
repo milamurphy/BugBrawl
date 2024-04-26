@@ -14,6 +14,8 @@ add_executable(CA2 main.cpp
         Board.h
         Roamer.cpp
         Roamer.h
+        Superbug.h
+        Superbug.cpp
 )
 
 set(SFML_STATIC_LIBRARIES TRUE)

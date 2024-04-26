@@ -2,6 +2,7 @@
 #define CA2_BOARD_H
 #include <vector>
 #include <fstream>
+#include <SFML/Window/Event.hpp>
 #include "Bug.h"
 
 using namespace std;
@@ -29,6 +30,8 @@ public:
     void runSimulation();
     int countAliveBugs() const;
     void displayGUI();
+
+    void tapBoard(const sf::Event &event);
 };
 
 

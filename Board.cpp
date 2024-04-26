@@ -2,6 +2,7 @@
 #include "Crawler.h"
 #include "Hopper.h"
 #include "Roamer.h"
+#include "Superbug.h"
 #include <iostream>
 #include <sstream>
 #include <fstream>
@@ -52,6 +53,10 @@ void Board::initialiseBugBoard(ifstream& fin) {
                 else if (bug_type == ("R")) {
                     bug_vector.push_back(new Roamer(id, position, direction, size));
                     cells[x][y].push_back(new Roamer(id, position, direction, size));
+                }
+                else if (bug_type == ("S")) {
+                    bug_vector.push_back(new Superbug(id, position, direction, size));
+                    cells[x][y].push_back(new Superbug(id, position, direction, size));
                 }
             }
             catch (std::invalid_argument const &e) {
@@ -136,9 +141,73 @@ void Board::findABug(int id) {
 void Board::tapBoard() {
     for(Bug *bug : bug_vector)
     {
+        // Reference: Derek Flood
         vector<Bug*> &v = cells[bug->getPosition().first][bug->getPosition().second];
         v.erase(remove(v.begin(), v.end(), bug));
         bug->move();
+        cells[bug->getPosition().first][bug->getPosition().second].push_back(bug);
+    }
+
+    cout << "Board tapped" << endl;
+
+    // to do, if 2 bugs are the same size when they fight, pick a bug at random
+    for (int x = 0; x < 10; x++) { // iterate over each cell in the 10x10 board
+        for (int y = 0; y < 10; y++) {
+            if (!cells[x][y].empty()) {
+                Bug *biggestBug = cells[x][y][0]; // initalises the first bug as the biggest bug
+                for (auto it = cells[x][y].begin() + 1; it != cells[x][y].end(); it++) {
+                    Bug *currentBug = *it; // assign each bug as the current bug
+                    if (currentBug->getSize() > biggestBug->getSize()) {
+                        biggestBug = currentBug; // if the current bug is bigger than the biggest bug, become the biggest bug
+                    }
+                }
+                for (auto it = cells[x][y].begin(); it != cells[x][y].end(); ++it) { // loop through again to add the sizes of all smaller bugs to the biggest bug
+                    Bug *currentBug = *it;
+                    if (currentBug != biggestBug) {
+                        if(currentBug->isAlive())
+                        {
+                            biggestBug->setSize(biggestBug->getSize() + currentBug->getSize());
+                            currentBug->setAlive(false); // current bug is now dead
+                            currentBug->setEatenBy(to_string((biggestBug->getId())));
+
+                            cout << biggestBug->getId() << " Killed " << currentBug->getId() << endl;
+                        }
+                    }
+                }
+            }
+        }
+    } // end of bug eating for loop
+
+    // check for winner
+    int aliveBugCount = 0;
+    Bug *lastAliveBug = nullptr;
+    for (const auto &bug : bug_vector) {
+        if (bug->isAlive()) {
+            aliveBugCount++;
+            lastAliveBug = bug;
+        }
+    }
+    if (aliveBugCount == 1 && lastAliveBug != nullptr) {
+        cout << "The winner is Bug ID: " << lastAliveBug->getId() << endl;
+    }
+}
+
+void Board::tapBoard(const Event& event) {
+    for(Bug *bug : bug_vector)
+    {
+        // Reference: Derek Flood
+        vector<Bug*> &v = cells[bug->getPosition().first][bug->getPosition().second];
+        v.erase(remove(v.begin(), v.end(), bug));
+
+        Superbug* superbug = dynamic_cast<Superbug*>(bug);
+        if (superbug) {
+            // If it is, move the Superbug with the event parameter
+            superbug->move(event);
+        } else {
+            // If not, move the bug as usual
+            bug->move();
+        }
+
         cells[bug->getPosition().first][bug->getPosition().second].push_back(bug);
     }
 
@@ -291,8 +360,9 @@ void Board::displayGUI() {
     // variables
     int cellSize = 80;
     int bugSize = 10;
-    int bugMarginX = (cellSize - bugSize) / 2; // center bugs within cells
-    int bugMarginY = (cellSize - bugSize) / 2;
+    //int bugMarginX = (cellSize - bugSize) / 2; // center bugs within cells
+    //int bugMarginY = (cellSize - bugSize) / 2;
+    /* Reference: https://www.sfml-dev.org/tutorials/2.6/ */
     Color lightBrown(196, 164, 132);
     Color darkBrown(156, 115, 96);
     Texture crawlerTexture;
@@ -301,14 +371,19 @@ void Board::displayGUI() {
     hopperTexture.loadFromFile("mantis.png");
     Texture roamerTexture;
     roamerTexture.loadFromFile("ladybug.png");
+    Texture superTexture;
+    superTexture.loadFromFile("superbug.png");
 
     Sprite crawlerSprite(crawlerTexture);
     Sprite hopperSprite(hopperTexture);
     Sprite roamerSprite(roamerTexture);
+    Sprite superSprite(superTexture);
 
+    // making sure they fit on the cells
     crawlerSprite.setScale((float)cellSize / crawlerTexture.getSize().x, (float)cellSize / crawlerTexture.getSize().y);
     hopperSprite.setScale((float)cellSize / hopperTexture.getSize().x, (float)cellSize / hopperTexture.getSize().y);
     roamerSprite.setScale((float)cellSize / roamerTexture.getSize().x, (float)cellSize / roamerTexture.getSize().y);
+    superSprite.setScale((float)cellSize / superTexture.getSize().x, (float)cellSize / superTexture.getSize().y);
 
     while (window.isOpen()) {
         Event event;
@@ -316,7 +391,9 @@ void Board::displayGUI() {
             if (event.type == Event::Closed) {
                 window.close();
             } else if (event.type == Event::MouseButtonPressed) {
-                    tapBoard();
+                tapBoard();
+            } else if (event.type == Event::KeyPressed) {
+                tapBoard(event);
             }
         }
 
@@ -348,6 +425,10 @@ void Board::displayGUI() {
                         else if(bug->getType() == "Roamer") {
                             roamerSprite.setPosition(i * cellSize, j * cellSize);
                             window.draw(roamerSprite);
+                        }
+                        else if(bug->getType() == "Superbug") {
+                            superSprite.setPosition(i * cellSize, j * cellSize);
+                            window.draw(superSprite);
                         }
                     }
                 }
